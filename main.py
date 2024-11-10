@@ -5,6 +5,8 @@ Created on Sat Oct 12 16:14:41 2024
 @author: sofie
 """
 
+from scripts.functions import create_solution, update_solution
+
 HANGMAN_PICS = ['''
  +---+
      |
@@ -41,25 +43,23 @@ HANGMAN_PICS = ['''
 /|\  |
 / \  |
     ===''']
+
     
 word = input("Enter a word: ")
+solution = create_solution(word)
 
 strikes = 0
-solution = "-" * len(word)
 
 print(solution)
 
 while strikes < 6:
     letter = input("Guess a letter: ")
-    correct = False
+    new_solution = update_solution(letter, word, solution)
     
-    for i in range(0, len(word)):
-        if (letter[0].lower() == word[i].lower() and solution[i] == "-"):
-            solution = solution[:i] + word[i] + solution[i + 1:]
-            correct = True
-    
-    if (correct == False):
+    if (new_solution == solution):
         strikes += 1
+    
+    solution = new_solution
     
     print(HANGMAN_PICS[strikes])
     print(solution)
@@ -70,5 +70,3 @@ while strikes < 6:
     
 if (strikes == 6):
     print("You lost...")
-    
-            
